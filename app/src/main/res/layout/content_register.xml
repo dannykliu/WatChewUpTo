@@ -21,7 +21,7 @@
         />
 
     <EditText
-        android:id="@+id/etNameRegister"
+        android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -34,7 +34,7 @@
         />
 
     <EditText
-        android:id="@+id/etEmailRegister"
+        android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -47,15 +47,28 @@
         />
 
     <EditText
-        android:id="@+id/etPasswordRegister"
+        android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:inputType="textPassword"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm Password"
+        />
+
+    <EditText
+        android:id="@+id/etPasswordConfirm"
+        android:layout_width="match_parent"
+        android:inputType="textPassword"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"/>
+
     <Button
-        android:id="@+id/Register"
+        android:id="@+id/bRegister"
         android:text="Register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

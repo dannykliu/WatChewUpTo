@@ -20,7 +20,7 @@
         />
 
     <EditText
-        android:id="@+id/etEmailLogin"
+        android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -33,7 +33,7 @@
         />
 
     <EditText
-        android:id="@+id/etPasswordLogin"
+        android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:inputType="textPassword"
         android:layout_height="wrap_content"
@@ -41,10 +41,20 @@
         />
 
     <Button
-        android:id="@+id/Login"
+        android:id="@+id/bLogin"
         android:text="Login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         />
+
+    <TextView
+        android:id="@+id/tvRegisterLink"
+        android:text="Register Here!"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"/>
 
 </LinearLayout>
