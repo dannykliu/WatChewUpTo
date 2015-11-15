@@ -7,11 +7,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener {
 
     Button btnSearch;
     Button btnFood;
+    int calorieCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,8 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         btnFood = (Button) findViewById(R.id.btnDailyFoods);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        final TextView mTextView = (TextView) findViewById(R.id.txtCurrentCalorie);
+        mTextView.setText(calorieCount);
     }
 
     @Override

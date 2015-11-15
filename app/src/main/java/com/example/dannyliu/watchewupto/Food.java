@@ -6,12 +6,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Food extends AppCompatActivity implements View.OnClickListener {
 
     Button btnProfile;
     Button btnSearch;
+    List<String> dailyFoodsOffered = new ArrayList<String>();
+    ListView list = (ListView) findViewById(R.id.foodList);
+    int listSize;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +29,19 @@ public class Food extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_food);
         btnProfile = (Button) findViewById(R.id.btnProfile);
         btnSearch = (Button) findViewById(R.id.btnSearch);
+        //Temporary text
+        dailyFoodsOffered.add("text");
+
+        //Getting food names and adding them to listArray
+        for (int i = 0; i < listSize; i++) {
+            dailyFoodsOffered.add("text");
+        }
+        //Setting arrayList into the listView
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                dailyFoodsOffered);
+        list.setAdapter(arrayAdapter);
     }
 
     @Override
