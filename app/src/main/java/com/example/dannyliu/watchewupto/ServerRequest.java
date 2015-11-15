@@ -217,7 +217,7 @@ public class ServerRequest {
                         HttpEntity entity1 = httpResponse1.getEntity();
                         String result1 = EntityUtils.toString(entity);
                         JSONObject jObject1 = new JSONObject(result1);
-                        
+
                         if(jObject1.length() == 0) {
                             return null;
                         }
