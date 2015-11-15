@@ -19,11 +19,46 @@ public class UserLocalStore {
     }
 
     public void storeUserData(User user){
+        //.edit() returns an Editor
         SharedPreferences.Editor spEditor = userLocalDatabases.edit();
         spEditor.putString("name", user.name);
         spEditor.putString("email", user.email);
         spEditor.putString("password", user.password);
         spEditor.commit();
 
+    }
+
+    public User getLoggedInUser(){
+        //fetch data from the database
+        String name = userLocalDatabases.getString("name", "");
+        String password = userLocalDatabases.getString("password", "");
+        String email = userLocalDatabases.getString("email", "");
+
+        //instantiate our user and return it
+        User storedUser = new User(name, email, password);
+        return storedUser;
+    }
+
+    public void setUserLoggedIn(boolean loggedIn){
+        SharedPreferences.Editor spEditor = userLocalDatabases.edit();
+        spEditor.putBoolean("loggedIn", loggedIn);
+        spEditor.commit();
+    }
+
+    public boolean getUserLoggedIn(){
+        //if the user is logged in, return true
+        if(userLocalDatabases.getBoolean("loggedIn", false)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public void clearUserData(){
+        //This makes a local copy of the sharedpref.
+        SharedPreferences.Editor spEditor = userLocalDatabases.edit();
+        //Make changes on the sharepref
+        spEditor.clear();
+        //commit these changes
+        spEditor.commit();
     }
 }

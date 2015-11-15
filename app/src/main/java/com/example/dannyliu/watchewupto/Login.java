@@ -16,13 +16,18 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     Button bLogin;
     EditText etEmail, etPassword;
     TextView tvRegisterLink;
+    UserLocalStore userLocalStore;
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.bLogin:
-
+                //when a user logs in, we need to store the information about that user and also tell the database that a user is logged in
+                User user = new User(null, null);
+                userLocalStore.storeUserData(user);
+                userLocalStore.setUserLoggedIn(true);
                 break;
+
             case R.id.tvRegisterLink:
 
                 startActivity(new Intent(this, Register.class));
@@ -50,6 +55,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         etPassword = (EditText) findViewById(R.id.etPassword);
         bLogin = (Button) findViewById(R.id.bLogin);
         tvRegisterLink = (TextView) findViewById(R.id.tvRegisterLink);
+        userLocalStore = new UserLocalStore(this);
 
         tvRegisterLink.setOnClickListener(this);
         bLogin.setOnClickListener(this);

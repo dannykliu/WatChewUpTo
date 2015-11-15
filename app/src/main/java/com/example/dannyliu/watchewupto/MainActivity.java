@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button bLogout;
     EditText etName, etEmail;
+    UserLocalStore userLocalStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         etName = (EditText) findViewById(R.id.etName);
         etEmail = (EditText) findViewById(R.id.etEmail);
         bLogout = (Button) findViewById(R.id.bLogout);
+
+        //'this' is the context
+        userLocalStore = new UserLocalStore(this);
 
         bLogout.setOnClickListener(this);
 
@@ -63,11 +67,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+    //When the main activity starts, our app will attempt to authenticate the user
+    //If the user is logged on, we then display the details using displayUserDetails()
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(authenticate()){
+            displayUserDetails();
+        }
+    }
+
+    private boolean authenticate(){
+       return userLocalStore.getUserLoggedIn();
+    }
+
+    private void displayUserDetails(){
+        //get the user that's logged in
+        User user = userLocalStore.getLoggedInUser();
+        etEmail.setText(user.email);
+        etName.setText(user.name);
+    }
+
     @Override
     public void onClick(View v) {
         switch(v.getId()){
             case(R.id.bLogout):
 
+                userLocalStore.clearUserData();
+                userLocalStore.setUserLoggedIn(false);
                 startActivity(new Intent(this, Login.class));
                 break;
         }
