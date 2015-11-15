@@ -29,6 +29,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     Button bLogout;
+    Button btnSearch;
+    Button btnFood;
+    Button btnProfile;
     EditText etName, etEmail, etQuery;
     UserLocalStore userLocalStore;
     String query;
@@ -52,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         etName = (EditText) findViewById(R.id.etName);
         etEmail = (EditText) findViewById(R.id.etEmail);
         bLogout = (Button) findViewById(R.id.bLogout);
+        btnSearch = (Button) findViewById(R.id.btnSearch);
+        btnFood = (Button) findViewById(R.id.btnDailyFoods);
+        btnProfile = (Button) findViewById(R.id.btnProfile);
         etQuery = (EditText) findViewById(R.id.etQuery);
 
         etQuery.setOnKeyListener(new View.OnKeyListener() {
@@ -136,10 +142,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()){
             case(R.id.bLogout):
-
                 userLocalStore.clearUserData();
                 userLocalStore.setUserLoggedIn(false);
                 startActivity(new Intent(this, Login.class));
+                break;
+            case(R.id.btnDailyFoods):
+                startActivity(new Intent(this, Food.class));
+                break;
+            case(R.id.btnSearch):
+                startActivity(new Intent(this, Search.class));
+                break;
+            case(R.id.btnProfile):
+                startActivity(new Intent(this, Profile.class));
                 break;
         }
     }

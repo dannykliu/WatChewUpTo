@@ -18,6 +18,7 @@ public class Food extends AppCompatActivity implements View.OnClickListener {
 
     Button btnProfile;
     Button btnSearch;
+    Button btnHome;
     List<String> dailyFoodsOffered = new ArrayList<String>();
     ListView list = (ListView) findViewById(R.id.foodList);
     int listSize;
@@ -29,6 +30,7 @@ public class Food extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_food);
         btnProfile = (Button) findViewById(R.id.btnProfile);
         btnSearch = (Button) findViewById(R.id.btnSearch);
+        btnHome = (Button) findViewById(R.id.btnHome);
         //Temporary text
         dailyFoodsOffered.add("text");
 
@@ -74,6 +76,9 @@ public class Food extends AppCompatActivity implements View.OnClickListener {
                 break;
             case (R.id.btnSearch):
                 startActivity(new Intent(this, Search.class));
+                break;
+            case (R.id.btnHome):
+                startActivity(new Intent(this, MainActivity.class));
                 break;
         }
     }
