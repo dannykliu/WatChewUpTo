@@ -1,5 +1,6 @@
 package com.example.dannyliu.watchewupto;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,10 +8,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -24,11 +27,13 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
+import java.io.Console;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    Button bLogout;
+    Button bLogout, bQuery;
     EditText etName, etEmail, etQuery;
     UserLocalStore userLocalStore;
     String query;
@@ -53,36 +58,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         etEmail = (EditText) findViewById(R.id.etEmail);
         bLogout = (Button) findViewById(R.id.bLogout);
         etQuery = (EditText) findViewById(R.id.etQuery);
+        bQuery = (Button) findViewById(R.id.bQuery);
 
-        etQuery.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if(event.getAction() == KeyEvent.KEYCODE_ENTER){
-                    query = etQuery.getText().toString();
-                    sendQuery(query);
-                }
-                return false;
-            }
-        });
+//
+//        etQuery.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//
+//                if(event.getAction() == KeyEvent.KEYCODE_ENTER){
+//                    query = etQuery.getText().toString();
+//                    sendQuery(query);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
         //'this' is the context
         userLocalStore = new UserLocalStore(this);
 
         bLogout.setOnClickListener(this);
+        bQuery.setOnClickListener(this);
+
 
     }
 
     private void sendQuery(String query){
+        Log.i("debug", "SERVER REQUEST CREATED ");
+
         ServerRequest serverRequests = new ServerRequest(this);
+        Log.i("debug", "STARTED CALLBACK ");
         serverRequests.sendQueryInBackground(query, new GetQueryCallback() {
             @Override
-            public void done(String query) {
+            public void done(ArrayList<FoodItem> queryFood) {
+                Log.i("debug", "COMPLETED CALLBACK ");
+
                 //load the next page
+                //query is the arraylist of fooditems
+                if (queryFood == null) {
+                    showErrorMessage();
+                    Log.i("debug", "SUM TING REALLY WONG ");
+
+                } else {
+                    Intent i = new Intent(MainActivity.this, Food.class);
+                    i.putParcelableArrayListExtra("query", queryFood);
+                    Log.i("debug", queryFood.size()+"");
+                    i.putExtra("query", queryFood);
+                    startActivity(i);
+                }
             }
         });
     }
 
+
+    private void showErrorMessage(){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        dialogBuilder.setMessage("Incorrect user details!");
+        dialogBuilder.setPositiveButton("Ok", null);
+    }
 
 
     @Override
@@ -140,6 +174,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 userLocalStore.clearUserData();
                 userLocalStore.setUserLoggedIn(false);
                 startActivity(new Intent(this, Login.class));
+                break;
+
+            case (R.id.bQuery):
+                query = etQuery.getText().toString();
+                Log.i("debug", "SEND QUERY CALL");
+                sendQuery(query);
+                Log.i("debug", "DONE QUERY CALL");
+
                 break;
         }
     }

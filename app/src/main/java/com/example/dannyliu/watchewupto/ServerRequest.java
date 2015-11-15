@@ -3,6 +3,7 @@ package com.example.dannyliu.watchewupto;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -18,6 +19,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
+import org.json.JSONArray;
 import java.util.ArrayList;
 
 /**
@@ -174,7 +176,7 @@ public class ServerRequest {
         protected void onPostExecute(ArrayList<FoodItem> a) {
             super.onPostExecute(a);
             progressDialog.dismiss();
-            callback.done(null);
+            callback.done(a);
         }
 
         //Access the server!!
@@ -182,6 +184,9 @@ public class ServerRequest {
         protected ArrayList<FoodItem> doInBackground(Void... params) {
             ArrayList<FoodItem> results = new ArrayList<FoodItem>();
             //Tell the server to post data to the database
+
+            ArrayList<NameValuePair> dataToSend = new ArrayList<>();
+            dataToSend.add(new BasicNameValuePair("search_string", query));
 
             HttpParams httpRequestParams = new BasicHttpParams();
             HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
@@ -191,19 +196,21 @@ public class ServerRequest {
             HttpPost post = new HttpPost(SERVER_ADDRESS + "select.php");
 
             try {
-                post.setEntity(new StringEntity(query));
+                post.setEntity(new UrlEncodedFormEntity(dataToSend));
                 //After we post the method with the query, select.php will return an array
 
                 HttpResponse httpResponse = client.execute(post);
                 HttpEntity entity = httpResponse.getEntity();
                 String result = EntityUtils.toString(entity);
-                JSONObject jObject = new JSONObject(result);
-                //JSONArray jArray = jObject.getJSONArray("id");
+                JSONArray obj = new JSONArray(result);
 
                 //Parse each ID
-                for(int i = 0; i < jObject.length(); i++) {
+                for(int i = 0; i < obj.length(); i++) {
                     //NOTE: Beyond ghetto
                     //Query server for item given by ID
+                    ArrayList<NameValuePair> dataToSend1 = new ArrayList<>();
+                    dataToSend1.add(new BasicNameValuePair("id", obj.get(i).toString()));
+                    Log.i("debug", obj.get(i).toString());
                     HttpParams httpRequestParams1 = new BasicHttpParams();
                     HttpConnectionParams.setConnectionTimeout(httpRequestParams1, CONNECTION_TIMEOUT);
                     HttpConnectionParams.setSoTimeout(httpRequestParams1, CONNECTION_TIMEOUT);
@@ -212,36 +219,57 @@ public class ServerRequest {
                     HttpPost post1 = new HttpPost(SERVER_ADDRESS + "getItem.php");
 
                     try {
-                        post.setEntity(new StringEntity(jObject.getString(i + "")));
-                        HttpResponse httpResponse1 = client.execute(post);
+                        post1.setEntity(new UrlEncodedFormEntity(dataToSend1));
+                        HttpResponse httpResponse1 = client1.execute(post1);
                         HttpEntity entity1 = httpResponse1.getEntity();
-                        String result1 = EntityUtils.toString(entity);
+                        String result1 = EntityUtils.toString(entity1);
                         JSONObject jObject1 = new JSONObject(result1);
-
+                        Log.i("debug", result1 + "DERP DERP DERP");
                         if(jObject1.length() == 0) {
                             return null;
                         }
                         else {
                             //Parse into ArrayList results
                             results.add(new FoodItem(
-                            jObject1.getString("name"),
-                            jObject1.getInt("serving"),
-                            jObject1.getBoolean("vegetarian"),
-                            jObject1.getString("ingredients"),
-                            jObject1.getInt("calories"),
-                            jObject1.getInt("fat"),
-                            jObject1.getInt("saturated"),
-                            jObject1.getInt("cholestrol"),
-                            jObject1.getInt("sodium"),
-                            jObject1.getInt("carbohydrate"),
-                            jObject1.getInt("fibre"),
-                            jObject1.getInt("sugars"),
-                            jObject1.getInt("protein"),
-                            jObject1.getInt("vitaminA"),
-                            jObject1.getInt("vitaminC"),
-                            jObject1.getInt("calcium"),
-                            jObject1.getInt("iron"),
-                            jObject1.getInt("id")));
+                                    jObject1.getString("0"),
+                                    jObject1.getInt("1"),
+                                    jObject1.getString("3"),
+                                    jObject1.getInt("4"),
+                                    jObject1.getInt("5"),
+                                    jObject1.getInt("6"),
+                                    jObject1.getInt("7"),
+                                    jObject1.getInt("8"),
+                                    jObject1.getInt("9"),
+                                    jObject1.getInt("10"),
+                                    jObject1.getInt("11"),
+                                    jObject1.getInt("12"),
+                                    jObject1.getInt("13"),
+                                    jObject1.getInt("14"),
+                                    jObject1.getInt("15"),
+                                    jObject1.getInt("16"),
+                                    jObject1.getInt("17")
+
+
+                            ));
+//                            jObject1.getString("name"),
+//                            jObject1.getInt("serving"),
+//                            jObject1.getBoolean("vegetarian"),
+//                            jObject1.getString("ingredients"),
+//                            jObject1.getInt("calories"),
+//                            jObject1.getInt("fat"),
+//                            jObject1.getInt("saturated"),
+//                            jObject1.getInt("cholestrol"),
+//                            jObject1.getInt("sodium"),
+//                            jObject1.getInt("carbohydrate"),
+//                            jObject1.getInt("fibre"),
+//                            jObject1.getInt("sugars"),
+//                            jObject1.getInt("protein"),
+//                            jObject1.getInt("vitaminA"),
+//                            jObject1.getInt("vitaminC"),
+//                            jObject1.getInt("calcium"),
+//                            jObject1.getInt("iron"),
+//                            jObject1.getInt("id")));
+                            //Log.i("debug", ""+results.get(i).calories);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -251,6 +279,7 @@ public class ServerRequest {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            Log.i("array", "" + results.size());
             return results;
         }
     }

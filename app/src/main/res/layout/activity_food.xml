@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Foods Being Served Today"
+        android:text="Search Results"
         android:layout_marginBottom="10dp"
         android:textSize="25dp"
         android:id="@+id/Title"
