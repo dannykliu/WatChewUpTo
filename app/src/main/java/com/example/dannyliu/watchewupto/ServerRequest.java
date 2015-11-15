@@ -18,7 +18,6 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 /**
@@ -160,7 +159,7 @@ public class ServerRequest {
         }
     }
 
-    public class sendQueryAsyncTask extends AsyncTask<Void, Void, Void> {
+    public class sendQueryAsyncTask extends AsyncTask<Void, Void, ArrayList<FoodItem> > {
 
         String query;
         GetQueryCallback callback;
@@ -172,15 +171,16 @@ public class ServerRequest {
 
         //When AsyncTask is finished
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(ArrayList<FoodItem> a) {
+            super.onPostExecute(a);
             progressDialog.dismiss();
             callback.done(null);
         }
 
         //Access the server!!
         @Override
-        protected Void doInBackground(Void... params) {
+        protected ArrayList<FoodItem> doInBackground(Void... params) {
+            ArrayList<FoodItem> results = new ArrayList<FoodItem>();
             //Tell the server to post data to the database
 
             HttpParams httpRequestParams = new BasicHttpParams();
@@ -192,11 +192,68 @@ public class ServerRequest {
 
             try {
                 post.setEntity(new StringEntity(query));
-                client.execute(post);
+                //After we post the method with the query, select.php will return an array
+
+                HttpResponse httpResponse = client.execute(post);
+                HttpEntity entity = httpResponse.getEntity();
+                String result = EntityUtils.toString(entity);
+                JSONObject jObject = new JSONObject(result);
+                //JSONArray jArray = jObject.getJSONArray("id");
+
+                //Parse each ID
+                for(int i = 0; i < jObject.length(); i++) {
+                    //NOTE: Beyond ghetto
+                    //Query server for item given by ID
+                    HttpParams httpRequestParams1 = new BasicHttpParams();
+                    HttpConnectionParams.setConnectionTimeout(httpRequestParams1, CONNECTION_TIMEOUT);
+                    HttpConnectionParams.setSoTimeout(httpRequestParams1, CONNECTION_TIMEOUT);
+
+                    HttpClient client1 = new DefaultHttpClient(httpRequestParams1);
+                    HttpPost post1 = new HttpPost(SERVER_ADDRESS + "getItem.php");
+
+                    try {
+                        post.setEntity(new StringEntity(jObject.getString(i + "")));
+                        HttpResponse httpResponse1 = client.execute(post);
+                        HttpEntity entity1 = httpResponse1.getEntity();
+                        String result1 = EntityUtils.toString(entity);
+                        JSONObject jObject1 = new JSONObject(result1);
+                        
+                        if(jObject1.length() == 0) {
+                            return null;
+                        }
+                        else {
+                            //Parse into ArrayList results
+                            results.add(new FoodItem(
+                            jObject1.getString("name"),
+                            jObject1.getInt("serving"),
+                            jObject1.getBoolean("vegetarian"),
+                            jObject1.getString("ingredients"),
+                            jObject1.getInt("calories"),
+                            jObject1.getInt("fat"),
+                            jObject1.getInt("saturated"),
+                            jObject1.getInt("cholestrol"),
+                            jObject1.getInt("sodium"),
+                            jObject1.getInt("carbohydrate"),
+                            jObject1.getInt("fibre"),
+                            jObject1.getInt("sugars"),
+                            jObject1.getInt("protein"),
+                            jObject1.getInt("vitaminA"),
+                            jObject1.getInt("vitaminC"),
+                            jObject1.getInt("calcium"),
+                            jObject1.getInt("iron"),
+                            jObject1.getInt("id")));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return null;
+            return results;
         }
     }
+
+
 }
