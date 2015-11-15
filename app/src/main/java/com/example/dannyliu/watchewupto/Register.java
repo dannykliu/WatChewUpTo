@@ -51,10 +51,21 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
 
-                User registeredData = new User(name, email, password);
+                User user = new User(name, email, password);
                 //startActivity(new Intent(this, MainActivity.class));
 
+                registerUser(user);
                 break;
         }
+    }
+
+    private void registerUser(User user){
+        ServerRequest serverRequests = new ServerRequest(this);
+        serverRequests.storeUserDataInBackground(user, new GetUserCallBack() {
+            @Override
+            public void done(User returnedUser) {
+                startActivity(new Intent(Register.this, Login.class));
+            }
+        });
     }
 }

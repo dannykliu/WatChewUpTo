@@ -1,5 +1,6 @@
 package com.example.dannyliu.watchewupto;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,9 +24,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         switch(v.getId()){
             case R.id.bLogin:
                 //when a user logs in, we need to store the information about that user and also tell the database that a user is logged in
-                User user = new User(null, null);
-                userLocalStore.storeUserData(user);
-                userLocalStore.setUserLoggedIn(true);
+                String email = etEmail.getText().toString();
+                String password = etPassword.getText().toString();
+                User user = new User(email, password);
+
+                authenticate(user);
                 break;
 
             case R.id.tvRegisterLink:
@@ -60,6 +63,35 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         tvRegisterLink.setOnClickListener(this);
         bLogin.setOnClickListener(this);
 
+    }
+
+    private void authenticate(User user){
+        ServerRequest serverRequests = new ServerRequest(this);
+        //this is actually so cool!
+        //Java here is imitating callback functions in javascript with the user of an interface and the concept of abstract functions
+        serverRequests.fetchUserDataInBackground(user, new GetUserCallBack() {
+            @Override
+            public void done(User returnedUser) {
+                if (returnedUser == null) {
+                    showErrorMessage();
+                } else {
+                    logUserIn(returnedUser);
+                }
+            }
+        });
+    }
+
+    private void showErrorMessage(){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Login.this);
+        dialogBuilder.setMessage("Incorrect user details!");
+        dialogBuilder.setPositiveButton("Ok", null);
+    }
+
+    private void logUserIn(User returnedUser){
+        userLocalStore.storeUserData(returnedUser);
+        userLocalStore.setUserLoggedIn(true);
+
+        startActivity(new Intent(Login.this, MainActivity.class));
     }
 
 }

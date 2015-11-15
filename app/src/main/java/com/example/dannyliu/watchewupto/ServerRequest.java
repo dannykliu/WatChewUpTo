@@ -27,7 +27,7 @@ public class ServerRequest {
 
     ProgressDialog progressDialog;
     public static final int CONNECTION_TIMEOUT = 1000 * 15;
-    public static final String SERVER_ADDRESS = "159.203.20.113";
+    public static final String SERVER_ADDRESS = "http://159.203.20.113/EngHacks/";
 
     public ServerRequest(Context context) {
         progressDialog = new ProgressDialog(context);
@@ -46,6 +46,7 @@ public class ServerRequest {
 
     public void fetchUserDataInBackground(User user, GetUserCallBack callback) {
         progressDialog.show();
+        new fetchUserDataAsyncTask(user, callback).execute();
     }
 
     //To do a background task in Android, we use an AsyncTask
@@ -106,7 +107,7 @@ public class ServerRequest {
 
         @Override
         protected void onPostExecute(User returnedUser) {
-            super.onPostExecute(user);
+            super.onPostExecute(returnedUser);
             progressDialog.dismiss();
             userCallback.done(returnedUser);
 
@@ -139,11 +140,8 @@ public class ServerRequest {
                     returnedUser = null;
                 } else {
                     String name = jObject.getString("name");
-                    String email = jObject.getString("email");
-                    String password = jObject.getString("password");
-                    
-                    returnedUser = new User(name, email, password);
 
+                    returnedUser = new User(name, user.email, user.password);
 
                 }
 
@@ -151,7 +149,7 @@ public class ServerRequest {
                 e.printStackTrace();
             }
 
-            return null;
+            return returnedUser;
         }
     }
 }
