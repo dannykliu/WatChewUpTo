@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(authenticate()){
             displayUserDetails();
+        } else {
+            startActivity(new Intent(this, Login.class));
         }
     }
 
