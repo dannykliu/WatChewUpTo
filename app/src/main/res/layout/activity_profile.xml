@@ -35,4 +35,17 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/btnDailyFoods"
         android:layout_toEndOf="@+id/btnDailyFoods" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22dp"
+        android:text="Current Caloric Intake: "
+        android:id="@+id/txtCurrentCalorie"
+        android:layout_below="@+id/txtTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="42dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="42dp" />
 </RelativeLayout>
