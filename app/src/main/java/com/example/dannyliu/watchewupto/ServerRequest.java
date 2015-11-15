@@ -10,6 +10,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
@@ -37,6 +38,7 @@ public class ServerRequest {
 
     }
 
+
     //omg look, in order to pass a function as a parameter, we must use an interface
     public void storeUserDataInBackground(User user, GetUserCallBack userCallback) {
         progressDialog.show();
@@ -47,6 +49,11 @@ public class ServerRequest {
     public void fetchUserDataInBackground(User user, GetUserCallBack callback) {
         progressDialog.show();
         new fetchUserDataAsyncTask(user, callback).execute();
+    }
+
+    public void sendQueryInBackground(String query, GetQueryCallback callback){
+        progressDialog.show();
+        new sendQueryAsyncTask(query, callback).execute();
     }
 
     //To do a background task in Android, we use an AsyncTask
@@ -150,6 +157,46 @@ public class ServerRequest {
             }
 
             return returnedUser;
+        }
+    }
+
+    public class sendQueryAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        String query;
+        GetQueryCallback callback;
+
+        public sendQueryAsyncTask(String query, GetQueryCallback callback) {
+            this.query = query;
+            this.callback = callback;
+        }
+
+        //When AsyncTask is finished
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            callback.done(null);
+        }
+
+        //Access the server!!
+        @Override
+        protected Void doInBackground(Void... params) {
+            //Tell the server to post data to the database
+
+            HttpParams httpRequestParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+            HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
+
+            HttpClient client = new DefaultHttpClient(httpRequestParams);
+            HttpPost post = new HttpPost(SERVER_ADDRESS + "select.php");
+
+            try {
+                post.setEntity(new StringEntity(query));
+                client.execute(post);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 }

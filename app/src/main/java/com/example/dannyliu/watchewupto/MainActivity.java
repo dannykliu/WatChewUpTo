@@ -1,22 +1,37 @@
 package com.example.dannyliu.watchewupto;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     Button bLogout;
-    EditText etName, etEmail;
+    EditText etName, etEmail, etQuery;
     UserLocalStore userLocalStore;
+    String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +52,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         etName = (EditText) findViewById(R.id.etName);
         etEmail = (EditText) findViewById(R.id.etEmail);
         bLogout = (Button) findViewById(R.id.bLogout);
+        etQuery = (EditText) findViewById(R.id.etQuery);
+
+        etQuery.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if(event.getAction() == KeyEvent.KEYCODE_ENTER){
+                    query = etQuery.getText().toString();
+                    sendQuery(query);
+                }
+                return false;
+            }
+        });
 
         //'this' is the context
         userLocalStore = new UserLocalStore(this);
@@ -44,6 +72,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bLogout.setOnClickListener(this);
 
     }
+
+    private void sendQuery(String query){
+        ServerRequest serverRequests = new ServerRequest(this);
+        serverRequests.sendQueryInBackground(query, new GetQueryCallback() {
+            @Override
+            public void done(String query) {
+                //load the next page
+            }
+        });
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,4 +143,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+
 }
