@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search"
-        android:id="@+id/btnSearch"
+        android:id="@+id/btnSearchData"
         android:layout_alignBottom="@+id/txtSearchBar"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -29,26 +29,31 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Profile"
-        android:id="@+id/btnProfile"
-        android:width="175dp"
-        android:layout_gravity="center"
+        android:text="Food"
+        android:width="115dp"
+        android:id="@+id/btnDailyFoods"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/btnDailyFoods"
-        android:layout_toLeftOf="@+id/btnDailyFoods" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Daily Foods"
-        android:layout_gravity="center"
-        android:id="@+id/btnDailyFoods"
-        android:width="175dp"
+        android:text="Profile"
+        android:width="115dp"
+        android:id="@+id/btnProfile"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/btnSearch"
-        android:layout_alignEnd="@+id/btnSearch" />
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home"
+        android:width="115dp"
+        android:id="@+id/btnHome"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/btnProfile"
+        android:layout_toStartOf="@+id/btnProfile" />
 
     <ListView
         android:layout_width="wrap_content"

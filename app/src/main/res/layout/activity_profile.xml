@@ -20,21 +20,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Food"
-        android:width="175dp"
+        android:width="115dp"
         android:id="@+id/btnDailyFoods"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search"
-        android:width="175dp"
+        android:width="115dp"
         android:id="@+id/btnSearch"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btnDailyFoods"
-        android:layout_toEndOf="@+id/btnDailyFoods" />
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home"
+        android:width="115dp"
+        android:id="@+id/btnHome"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/btnSearch"
+        android:layout_toStartOf="@+id/btnSearch" />
 
     <TextView
         android:layout_width="wrap_content"

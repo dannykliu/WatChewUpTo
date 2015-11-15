@@ -44,6 +44,7 @@
         />
 
     <Button
+<<<<<<< HEAD
         android:id="@+id/bQuery"
         android:text="Search"
         android:layout_width="match_parent"
@@ -64,12 +65,37 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:drawSelectorOnTop="false"
+=======
+        android:layout_width="354dp"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:id="@+id/btnProfile" />
+
+    <Button
+        android:layout_width="352dp"
+        android:layout_height="wrap_content"
+        android:text="Food"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/btnDailyFoods"
+>>>>>>> origin/master
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/btnSearch"
+         />
 
+    <Button
+        android:id="@+id/bLogout"
+        android:text="Logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
 
-
-
+        />
 
 
 </LinearLayout>

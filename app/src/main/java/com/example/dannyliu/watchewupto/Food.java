@@ -21,6 +21,7 @@ public class Food extends AppCompatActivity implements View.OnClickListener, Par
 
     Button btnProfile;
     Button btnSearch;
+    Button btnHome;
     List<String> dailyFoodsOffered = new ArrayList<String>();
     ListView list;
     int listSize;
@@ -53,6 +54,9 @@ public class Food extends AppCompatActivity implements View.OnClickListener, Par
 //        for(int i = 0; i < query.size() ; i++) {
 //            dailyFoodsOffered.add(query.get(i).name);
 //        }
+        btnHome = (Button) findViewById(R.id.btnHome);
+        //Temporary text
+        dailyFoodsOffered.add("text");
 
         //Setting arrayList into the listView
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
@@ -103,6 +107,9 @@ public class Food extends AppCompatActivity implements View.OnClickListener, Par
                 break;
             case (R.id.btnSearch):
                 startActivity(new Intent(this, Search.class));
+                break;
+            case (R.id.btnHome):
+                startActivity(new Intent(this, MainActivity.class));
                 break;
         }
     }

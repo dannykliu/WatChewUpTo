@@ -33,7 +33,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+<<<<<<< HEAD
     Button bLogout, bQuery;
+=======
+    Button bLogout;
+    Button btnSearch;
+    Button btnFood;
+    Button btnProfile;
+>>>>>>> origin/master
     EditText etName, etEmail, etQuery;
     UserLocalStore userLocalStore;
     String query;
@@ -57,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         etName = (EditText) findViewById(R.id.etName);
         etEmail = (EditText) findViewById(R.id.etEmail);
         bLogout = (Button) findViewById(R.id.bLogout);
+        btnSearch = (Button) findViewById(R.id.btnSearch);
+        btnFood = (Button) findViewById(R.id.btnDailyFoods);
+        btnProfile = (Button) findViewById(R.id.btnProfile);
         etQuery = (EditText) findViewById(R.id.etQuery);
         bQuery = (Button) findViewById(R.id.bQuery);
 
@@ -170,11 +180,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()){
             case(R.id.bLogout):
-
                 userLocalStore.clearUserData();
                 userLocalStore.setUserLoggedIn(false);
                 startActivity(new Intent(this, Login.class));
                 break;
+<<<<<<< HEAD
 
             case (R.id.bQuery):
                 query = etQuery.getText().toString();
@@ -182,6 +192,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 sendQuery(query);
                 Log.i("debug", "DONE QUERY CALL");
 
+=======
+            case(R.id.btnDailyFoods):
+                startActivity(new Intent(this, Food.class));
+                break;
+            case(R.id.btnSearch):
+                startActivity(new Intent(this, Search.class));
+                break;
+            case(R.id.btnProfile):
+                startActivity(new Intent(this, Profile.class));
+>>>>>>> origin/master
                 break;
         }
     }

@@ -13,12 +13,14 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
 
     Button btnSearch;
     Button btnFood;
+    Button btnHome;
     int calorieCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         btnSearch = (Button) findViewById(R.id.btnSearch);
         btnFood = (Button) findViewById(R.id.btnDailyFoods);
+        btnHome = (Button) findViewById(R.id.btnHome);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         final TextView mTextView = (TextView) findViewById(R.id.txtCurrentCalorie);
@@ -55,6 +57,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 break;
             case (R.id.btnSearch):
                 startActivity(new Intent(this, Search.class));
+                break;
+            case (R.id.btnHome):
+                startActivity(new Intent(this, MainActivity.class));
                 break;
         }
     }

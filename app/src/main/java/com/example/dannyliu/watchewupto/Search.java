@@ -13,6 +13,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener  {
     //Creating buttons
     Button btnProfile;
     Button btnFood;
+    Button btnHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener  {
         //Initializing buttons
         btnProfile = (Button) findViewById(R.id.btnProfile);
         btnFood = (Button) findViewById(R.id.btnDailyFoods);
+        btnHome = (Button) findViewById(R.id.btnHome);
         setContentView(R.layout.activity_search);
     }
 
@@ -53,6 +55,9 @@ public class Search extends AppCompatActivity implements View.OnClickListener  {
                 break;
             case (R.id.btnDailyFoods):
                 startActivity(new Intent(this, Food.class));
+                break;
+            case (R.id.btnHome):
+                startActivity(new Intent(this, MainActivity.class));
                 break;
         }
     }
